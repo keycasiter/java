@@ -23,8 +23,8 @@ public class MutexCondition {
     private AtomicInteger count = new AtomicInteger(0);
 
     MutexCondition(Lock lock, String name) {
-        condition = lock.newCondition();
-        name = name;
+        this.condition = lock.newCondition();
+        this.name = name;
     }
 
     public String getName() {

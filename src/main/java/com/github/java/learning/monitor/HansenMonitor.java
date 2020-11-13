@@ -17,7 +17,7 @@ public class HansenMonitor extends AbstractMonitor {
             //唤醒因调用signal操作的线程
             blockingQueue.next.release();
         }
-        LOGGER.info("线程【{}】调用wait被挂起到条件变量【{}】。", id, notFull.getCondition());
+        LOGGER.info("线程【{}】调用wait被挂起到条件变量【{}】。", id, notFull.getName());
         //挂起时自动释放锁，等待进入管程的队列可以获得锁并进入管程
         notFull.getCondition().await();
         LOGGER.info("被挂起的线程【{}】被唤醒执行。", id);
