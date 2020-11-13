@@ -25,9 +25,7 @@ public class HoareMonitor {
 
     //互斥锁，用以实现缓冲的互斥访问
     static Lock lock = new ReentrantLock();
-    //条件变量：队列未满
     static cond notFull = new cond(lock, "notFull");
-    //条件变量：队列不空
     static cond notEmpty = new cond(lock, "notEmpty");
     //用与存放因无法进入管程的阻塞队列&&因为调用signal阻塞自身的线程（Hoare）
     static interf IM = new interf(lock);
