@@ -16,6 +16,18 @@
     </properties>
 
     <dependencies>
+        <!--Activiti的BPM引擎-->
+        <dependency>
+            <groupId>org.activiti</groupId>
+            <artifactId>activiti-engine</artifactId>
+            <version>5.22.0</version>
+        </dependency>
+        <!--DBCP连接池-->
+        <dependency>    
+            <groupId>commons-dbcp</groupId>    
+            <artifactId>commons-dbcp</artifactId>
+            <version>1.4</version>
+        </dependency>
         <!--orika-->
         <dependency>
             <groupId>ma.glasnost.orika</groupId>
