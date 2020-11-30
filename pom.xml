@@ -52,6 +52,12 @@
             <artifactId>activiti-json-converter</artifactId>
             <version>${activiti.version}</version>
         </dependency>
+
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>19.0</version>
+        </dependency>
         <!--DBCP连接池-->
         <dependency>    
             <groupId>commons-dbcp</groupId>    
