@@ -1,8 +1,10 @@
-package com.github.java.learning.spring.spel;
+package com.github.java.learning.spring.spel.aspect;
 
+import com.github.java.learning.spring.spel.annotation.Spel;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
+import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.core.LocalVariableTableParameterNameDiscoverer;
 import org.springframework.core.ParameterNameDiscoverer;
 import org.springframework.expression.EvaluationContext;
@@ -12,6 +14,7 @@ import org.springframework.expression.spel.standard.SpelExpressionParser;
 import org.springframework.expression.spel.support.StandardEvaluationContext;
 import org.springframework.stereotype.Component;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 
 /**
@@ -27,9 +30,13 @@ public class SpelAspect {
     private final static ExpressionParser parser = new SpelExpressionParser();
     private final static ParameterNameDiscoverer discoverer = new LocalVariableTableParameterNameDiscoverer();
 
-    @Around("@annotation(com.github.java.learning.spring.spel.Spel)")
+    @Around("@annotation(com.github.java.learning.spring.spel.annotation.Spel)")
     public Object around(ProceedingJoinPoint pjp) {
         Object result = null;
+
+        String str = parseSpel(getMethod(pjp),getArgs(pjp),getAnnotation(pjp).variables());
+
+        System.out.println(str);
 
         try {
             result = pjp.proceed();
@@ -38,6 +45,38 @@ public class SpelAspect {
         } finally {
             return result;
         }
+    }
+
+    protected Method getMethod(ProceedingJoinPoint pjp) {
+        Method method = null;
+        try {
+            MethodSignature ms = (MethodSignature) pjp.getSignature();
+            method = pjp.getTarget()
+                    .getClass()
+                    .getMethod(ms.getName(), ms.getParameterTypes());
+        } catch (NoSuchMethodException e) {
+            //ignore
+        }
+        return method;
+    }
+
+    protected Object[] getArgs(ProceedingJoinPoint pjp) {
+        return pjp.getArgs();
+    }
+
+    protected static Spel getAnnotation(ProceedingJoinPoint pjp) {
+        Annotation annotation = null;
+        try {
+            MethodSignature ms = (MethodSignature) pjp.getSignature();
+            annotation = pjp.getTarget()
+                    .getClass()
+                    .getMethod(ms.getName(), ms.getParameterTypes())
+                    .getAnnotation(Spel.class);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return (Spel) annotation;
     }
 
     private String parseSpel(Method method, Object[] args, String spel) {

@@ -1,5 +1,6 @@
 package com.github.java.learning.spring.spel;
 
+import com.github.java.learning.spring.spel.annotation.Spel;
 import org.springframework.stereotype.Component;
 
 /**
@@ -10,6 +11,6 @@ public class SpelService {
 
     @Spel(variables = "{name:'zhangsan'}")
     public Object test(){
-        return null;
+        return new Object();
     }
 }
