@@ -9,6 +9,8 @@ public class User {
 
     private Integer age;
 
+    private String bizId;
+
     private User user;
 
     public User(String name) {
@@ -39,10 +41,19 @@ public class User {
         this.user = user;
     }
 
+    public String getBizId() {
+        return bizId;
+    }
+
+    public void setBizId(String bizId) {
+        this.bizId = bizId;
+    }
+
 
     public static final class Builder {
         private String name;
         private Integer age;
+        private String bizId;
         private User user;
 
         private Builder() {
@@ -62,15 +73,20 @@ public class User {
             return this;
         }
 
+        public Builder bizId(String bizId) {
+            this.bizId = bizId;
+            return this;
+        }
+
         public Builder user(User user) {
             this.user = user;
             return this;
         }
 
         public User build() {
-            User user = new User("");
-            user.setName(name);
+            User user = new User(name);
             user.setAge(age);
+            user.setBizId(bizId);
             user.setUser(user);
             return user;
         }

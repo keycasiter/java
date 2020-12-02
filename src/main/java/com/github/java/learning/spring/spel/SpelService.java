@@ -6,11 +6,16 @@ import org.springframework.stereotype.Component;
 /**
  * created by guanjian on 2020/11/30 20:13
  */
-@Component
+@Component("spelService")
 public class SpelService {
 
-    @Spel(variables = "{name:'zhangsan'}")
-    public Object test(){
+    @Spel(
+            variables = "{name:'#req.name',age:'#req.age'}",
+            bizId = "#req.bizId",
+            operation = Operation.START
+
+    )
+    public Object test(User req) {
         return new Object();
     }
 }

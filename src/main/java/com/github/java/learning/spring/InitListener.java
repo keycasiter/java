@@ -33,13 +33,13 @@ public class InitListener implements ApplicationContextAware, ServletContextAwar
     @Override
     public Object postProcessBeforeInitialization(Object o, String s) throws BeansException {
         LOGGER.info("BeanPostProcessor====postProcessBeforeInitialization");
-        return null;
+        return o;
     }
 
     @Override
     public Object postProcessAfterInitialization(Object o, String s) throws BeansException {
         LOGGER.info("BeanPostProcessor====postProcessAfterInitialization");
-        return null;
+        return o;
     }
 
     @Override
