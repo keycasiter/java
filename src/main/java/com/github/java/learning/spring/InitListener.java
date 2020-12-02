@@ -19,7 +19,7 @@ import javax.servlet.ServletContext;
 /**
  * created by guanjian on 2020/11/17 9:22
  */
-@Component("initListener")
+//@Component("initListener")
 public class InitListener implements ApplicationContextAware, ServletContextAware, BeanFactoryPostProcessor, BeanPostProcessor,
         InitializingBean, ApplicationListener<ContextRefreshedEvent> {
 
