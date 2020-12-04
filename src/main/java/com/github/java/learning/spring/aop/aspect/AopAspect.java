@@ -30,26 +30,18 @@ public class AopAspect {
     @Resource
     private TransactionTemplate transactionTemplate;
 
-    @Around("@annotation(com.github.java.learning.spring.aop.annotation.Aop) " +
-            "|| @annotation(com.github.java.learning.spring.aop.annotation.Aops)")
-    public Object around(ProceedingJoinPoint pjp) {
-        return transactionTemplate.execute(transactionStatus -> {
-            Object result = null;
-            try {
-                Aop[] aops = getMethod(pjp).getAnnotationsByType(Aop.class);
-                Stream.of(aops).forEach(x->{
-                    System.out.format("value=== %s\n", x.value());
-                });
-
-                result = pjp.proceed();
-                System.out.println("execute===");
-            } catch (Throwable e) {
-                e.getStackTrace();
-                transactionStatus.setRollbackOnly();
-            } finally {
-                return true;
-            }
+    /**
+     * 1、当使用一个@Aop时，如果只拦截@Aop不拦截@Aops，只能通过getAnnotation()获取到@Aop直接方法
+     * 2、当使用多个@Aop时，需要拦截@Aops通过getAnnotationsByType来获取@Aop数组才可以拿到注解对象
+     */
+    @Around("@annotation(com.github.java.learning.spring.aop.annotation.Aop) || @annotation(com.github.java.learning.spring.aop.annotation.Aops) " )
+    public Object around(ProceedingJoinPoint pjp) throws Throwable {
+        Aop[] aops = getMethod(pjp).getAnnotationsByType(Aop.class);
+        Stream.of(aops).forEach(x->{
+            System.out.format("value=== %s\n", x.value());
         });
+
+        return pjp.proceed();
     }
 
     protected Method getMethod(ProceedingJoinPoint pjp) {
