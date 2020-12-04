@@ -33,7 +33,7 @@ public class AopAspect {
     @Around("@annotation(com.github.java.learning.spring.aop.annotation.Aop) " +
             "|| @annotation(com.github.java.learning.spring.aop.annotation.Aops)")
     public Object around(ProceedingJoinPoint pjp) {
-        transactionTemplate.execute((TransactionCallback<Boolean>) transactionStatus -> {
+        return transactionTemplate.execute(transactionStatus -> {
             Object result = null;
             try {
                 Aop[] aops = getMethod(pjp).getAnnotationsByType(Aop.class);
@@ -45,6 +45,7 @@ public class AopAspect {
                 System.out.println("execute===");
             } catch (Throwable e) {
                 e.getStackTrace();
+                transactionStatus.setRollbackOnly();
             } finally {
                 return true;
             }
