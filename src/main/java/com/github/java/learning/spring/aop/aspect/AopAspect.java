@@ -31,15 +31,16 @@ public class AopAspect {
     private TransactionTemplate transactionTemplate;
 
     /**
-     *   - 当使用一个注解@Aop时，如果只拦截@Aop不拦截@Aops，只能通过getAnnotation()获取到@Aop直接方法
-     *  - 当使用多个相同注解@Aop时，需要拦截@Aops通过getAnnotationsByType来获取@Aop数组才可以拿到注解对象
-     *  - 也就是说，使用多个相同注解的时候，需要通过getAnnotationsByType来获取拿到注解对象；单个的时候，getAnnotation()获取单个和getAnnotationsByType获取数组都可以拿到
-     *  - 所以，使用的时候，为了支持单个和多个的可扩展性，@Around配置同时拦截@Aop和@Aops，通过getAnnotationsByType获取注解数组来获取注解对象进行逻辑操作
+     * - 当使用一个注解@Aop时，如果只拦截@Aop不拦截@Aops，只能通过getAnnotation()获取到@Aop直接方法
+     * - 当使用多个相同注解@Aop时，需要拦截@Aops通过getAnnotationsByType来获取@Aop数组才可以拿到注解对象
+     * - 也就是说，使用多个相同注解的时候，需要通过getAnnotationsByType来获取拿到注解对象；单个的时候，getAnnotation()获取单个和getAnnotationsByType获取数组都可以拿到
+     * - 所以，使用的时候，为了支持单个和多个的可扩展性，@Around配置同时拦截@Aop和@Aops，通过getAnnotationsByType获取注解数组来获取注解对象进行逻辑操作
      */
-    @Around("@annotation(com.github.java.learning.spring.aop.annotation.Aop) || @annotation(com.github.java.learning.spring.aop.annotation.Aops) " )
+    @Around("@annotation(com.github.java.learning.spring.aop.annotation.Aop) || @annotation(com.github.java.learning.spring.aop.annotation.Aops)")
     public Object around(ProceedingJoinPoint pjp) throws Throwable {
+//        System.out.println(getMethod(pjp).getAnnotation(Aop.class).value());
         Aop[] aops = getMethod(pjp).getAnnotationsByType(Aop.class);
-        Stream.of(aops).forEach(x->{
+        Stream.of(aops).forEach(x -> {
             System.out.format("value=== %s\n", x.value());
         });
 
