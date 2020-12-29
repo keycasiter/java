@@ -17,6 +17,10 @@ public class CyclicBarrierTest {
 
     public static void main(String[] args) {
         IntStream.range(0, nums).forEach(x -> {
+            if (x==3){
+                cyclicBarrier.reset();
+            }
+
             new Thread(()->{
                 try {
                     System.out.println("阻塞等待");
