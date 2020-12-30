@@ -1,165 +1,107 @@
 package com.github.java.learning.dataStructure;
 
+import org.springframework.util.Assert;
+
+import java.util.Arrays;
+
 /**
  * 哈夫曼树
  * created by guanjian on 2020/12/30 15:43
  */
 public class HuffmanTree {
 
-    /**
-     * 权值数组
-     */
-    private int[] weightArray;
-    /**
-     * 哈夫曼树结点数组
-     */
-    private HuffmanTreeNode[] huffmanTreeNodeArray;
+    //权值结点
+    private Integer[] weightArray;
+    //哈夫曼树结点总数 2*weights - 1
+    private int huffmanTreeNodeLength = 7;//2 * this.weightArray.length - 1;
+    //哈夫曼树结点数组
+    private HuffmanTreeNode[] huffmanTreeNodeArray = new HuffmanTreeNode[7];
+    //每次获取最小权值数量
+    private final static int minNodeLength = 2;
 
-    public HuffmanTree(int[] weightArray, HuffmanTreeNode[] huffmanTreeNodeArray) {
+    public HuffmanTree(Integer[] weightArray) {
+        Assert.notEmpty(weightArray, "weightArray can not be empty");
         this.weightArray = weightArray;
-        this.huffmanTreeNodeArray = huffmanTreeNodeArray;
+        initHuffmanTreeNodeArray();
+        buildHuffmanTree();
     }
-
-    public static final class Builder {
-        private int[] weightArray;
-        private HuffmanTreeNode[] huffmanTreeNodeArray;
-
-        private Builder() {
-        }
-
-        public static Builder aHuffmanTree() {
-            return new Builder();
-        }
-
-        public Builder weightArray(int[] weightArray) {
-            this.weightArray = weightArray;
-            return this;
-        }
-
-        public Builder huffmanTreeNodeArray(HuffmanTreeNode[] huffmanTreeNodeArray) {
-            this.huffmanTreeNodeArray = huffmanTreeNodeArray;
-            return this;
-        }
-
-        public HuffmanTree build() {
-            return new HuffmanTree(weightArray, huffmanTreeNodeArray);
-        }
-    }
-
 
     /**
-     * 哈夫曼树子结点定义
+     * 初始化哈夫曼树结点数组
      */
-    class HuffmanTreeNode {
-
-        /**
-         * 父结点
-         */
-        private int parent;
-
-        /**
-         * 左子结点
-         */
-        private HuffmanTreeNode leftChild;
-
-        /**
-         * 右子结点
-         */
-        private HuffmanTreeNode rightChild;
-
-        /**
-         * 权重值
-         */
-        private int weight;
-
-        public int getParent() {
-            return parent;
+    private void initHuffmanTreeNodeArray() {
+        for (int i : weightArray) {
+            //这里将权值灌入到node节点中
+            huffmanTreeNodeArray[i].setWeight(i);
         }
+    }
 
-        public void setParent(int parent) {
-            this.parent = parent;
-        }
+    /**
+     * 查找最小权值方法
+     */
+    private HuffmanTreeNode[] findMinNodes() {
+        //按升序进行排序
+        Arrays.sort(huffmanTreeNodeArray);
+        //取最小权值的两个node
+        return Arrays.copyOfRange(huffmanTreeNodeArray,
+                0,
+                huffmanTreeNodeArray.length >= minNodeLength ? minNodeLength : huffmanTreeNodeArray.length);
+    }
 
-        public HuffmanTreeNode getLeftChild() {
-            return leftChild;
-        }
+    /**
+     * 构建哈夫曼树
+     */
+    private void buildHuffmanTree() {
+        for (; ; ) {
+            /**
+             * 1、选取与合并
+             */
+            HuffmanTreeNode[] minNodes = findMinNodes();
+            if (minNodes.length != minNodeLength) break;
 
-        public void setLeftChild(HuffmanTreeNode leftChild) {
-            this.leftChild = leftChild;
-        }
+            //左子节点
+            HuffmanTreeNode leftChild = minNodes[0];
+            //右子节点
+            HuffmanTreeNode rightChild = minNodes[1];
+            //父结点
+            HuffmanTreeNode parent = HuffmanTreeNode.Builder.aHuffmanTreeNode()
+                    .weight(minNodes[0].getWeight() + minNodes[1].getWeight())
+                    .leftChild(leftChild)
+                    .rightChild(rightChild)
+                    .build();
 
-        public HuffmanTreeNode getRightChild() {
-            return rightChild;
-        }
+            leftChild.setParent(parent);
+            rightChild.setParent(parent);
 
-        public void setRightChild(HuffmanTreeNode rightChild) {
-            this.rightChild = rightChild;
-        }
-
-        public int getWeight() {
-            return weight;
-        }
-
-        public void setWeight(int weight) {
-            this.weight = weight;
-        }
-
-        public class Builder {
-
-            private int parent;
-            private HuffmanTreeNode leftChild;
-            private HuffmanTreeNode rightChild;
-            private int weight;
-
-            private Builder() {
-            }
-
-            public Builder aHuffmanTreeNode() {
-                return new Builder();
-            }
-
-            public Builder weight(int weight) {
-                this.weight = weight;
-                return this;
-            }
-
-            public Builder parent(int parent) {
-                this.parent = parent;
-                return this;
-            }
-
-            public Builder rightChild(HuffmanTreeNode rightChild) {
-                this.rightChild = rightChild;
-                return this;
-            }
-
-            public Builder leftChild(HuffmanTreeNode leftChild) {
-                this.leftChild = leftChild;
-                return this;
-            }
-
-            public HuffmanTreeNode build() {
-                HuffmanTreeNode huffmanTreeNode = new HuffmanTreeNode();
-                huffmanTreeNode.setLeftChild(this.leftChild);
-                huffmanTreeNode.setRightChild(this.rightChild);
-                huffmanTreeNode.setParent(this.parent);
-                huffmanTreeNode.setWeight(this.weight);
-                return huffmanTreeNode;
-            }
+            /**
+             * 2、删除与加入
+             */
+            huffmanTreeNodeArray[huffmanTreeNodeArray.length] = parent;
         }
     }
 
     public static void main(String[] args) {
-        //权值结点n
+        //权值结点
+        Integer[] weightArray = new Integer[]{2, 3, 5, 7};
 
-        //哈夫曼树结点总数 2n-1
+        HuffmanTree huffmanTree = new HuffmanTree(weightArray);
 
-
-        HuffmanTreeNode[] huffmanTreeNodeArray = new HuffmanTreeNode[];
-
-        HuffmanTree huffmanTree = HuffmanTree.Builder.aHuffmanTree()
-                .huffmanTreeNodeArray()
-                .weightArray(new int[]{})
-                .build();
+//        HuffmanTreeNode[] huffmanTreeNodeArray = new HuffmanTreeNode[]{
+//                HuffmanTreeNode.Builder.aHuffmanTreeNode()
+//                        .weight(3)
+//                        .build(),
+//                HuffmanTreeNode.Builder.aHuffmanTreeNode()
+//                        .weight(7)
+//                        .build(),
+//                HuffmanTreeNode.Builder.aHuffmanTreeNode()
+//                        .weight(2)
+//                        .build(),
+//                HuffmanTreeNode.Builder.aHuffmanTreeNode()
+//                        .weight(4)
+//                        .build()
+//        };
+//        Arrays.sort(huffmanTreeNodeArray);
+//        System.out.println(Arrays.toString(huffmanTreeNodeArray));
+//        System.out.println(Arrays.toString(Arrays.copyOfRange(huffmanTreeNodeArray, 0, 2)));
     }
 }
