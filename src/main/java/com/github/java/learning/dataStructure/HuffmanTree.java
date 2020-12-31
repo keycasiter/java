@@ -59,10 +59,11 @@ public class HuffmanTree {
                 .filter(x -> !x.isSorted())
                 .sorted(Comparator.comparing(HuffmanTreeNode::getWeight))
                 .collect(Collectors.toList());
-
+        sortedList.forEach(x -> System.out.format("排序 %s 处理 %s \n", x.getWeight(), x.isSorted()));
         //取最小权值的两个node
         List<HuffmanTreeNode> list = sortedList.subList(0,
                 sortedList.size() >= minNodeLength ? minNodeLength : sortedList.size());
+
         if (CollectionUtils.isEmpty(list)) return list;
 
         list.forEach(x -> {
@@ -290,7 +291,7 @@ public class HuffmanTree {
 
     public static void main(String[] args) {
         //权值结点
-        Integer[] weightArray = new Integer[]{7, 3, 2, 4};
+        Integer[] weightArray = new Integer[]{2,3,5,7,5};
 
         //声明哈夫曼树
         HuffmanTree huffmanTree = new HuffmanTree(weightArray);
