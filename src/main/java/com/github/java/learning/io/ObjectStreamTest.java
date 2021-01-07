@@ -84,7 +84,7 @@ public class ObjectStreamTest {
         private String name;
         private int age;
         private boolean isAlive;
-        private char gender;
+        private transient char gender;
 
         public Person(String name, int age, boolean isAlive, char gender) {
             this.name = name;
