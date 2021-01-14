@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * 每次只能处理一个连接请求，其他连接请求会被阻塞
+ * 单线程处理
  * created by guanjian on 2021/1/12 9:09
  */
 public class SingleThreadNIOSocketChannelServer {
