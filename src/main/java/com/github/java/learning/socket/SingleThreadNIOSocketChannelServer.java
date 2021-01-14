@@ -20,14 +20,15 @@ import java.util.Optional;
  */
 public class SingleThreadNIOSocketChannelServer {
 
-    private static ByteBuffer byteBuffer = ByteBuffer.allocate(1024);
-
+    /**
+     * 存储SocketChannel集合
+     */
     private static List<SocketChannel> channels = Lists.newArrayList();
 
     public static void main(String[] args) throws IOException, InterruptedException {
         ServerSocketChannel socketServer = ServerSocketChannel.open();
-        socketServer.bind(new InetSocketAddress(9999));
-        //设置非阻塞模式
+        socketServer.socket().bind(new InetSocketAddress(9999));
+        //设置非阻塞模式，这里控制的是accept函数是否阻塞
         socketServer.configureBlocking(false);
 
         System.out.println("Server starting ...");
@@ -37,25 +38,34 @@ public class SingleThreadNIOSocketChannelServer {
             SocketChannel socketChannel = socketServer.accept();
             if (null != socketChannel) {
                 System.out.println("Server receive connect ...");
+                //设置非阻塞模式，这里控制的是read函数是否阻塞
+                socketChannel.configureBlocking(false);
                 channels.add(socketChannel);
             }
 
-            Optional.ofNullable(channels).ifPresent(channels -> {
-                channels.stream().filter(channel -> channel.isOpen()).forEach(channel -> {
+            System.out.format("============ channels:%s ============\n", channels.size());
+            Optional.ofNullable(channels).ifPresent(channels->{
+                channels.stream().filter(channel -> channel.isConnected()).forEach(channel -> {
                     try {
+                        System.out.println("Server read data begin ...");
+
+                        ByteBuffer byteBuffer = ByteBuffer.allocate(1024);
+
                         int len = channel.read(byteBuffer);
-                        System.out.println(byteBuffer.toString());
-                        System.out.println(len);
                         if (len > 0) {
+                            byteBuffer.flip();
                             System.out.format("Server receive data : %s ...\n", byteBufferToString(byteBuffer));
+                        } else {
+                            System.out.println("Server receive data is empty ...");
                         }
+                        System.out.println("Server read data end ...");
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
                 });
             });
             //为了打印日志，故意设置时间间隔
-            Thread.sleep(5000);
+            Thread.sleep(2000);
         }
     }
 
