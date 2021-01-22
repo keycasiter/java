@@ -53,5 +53,17 @@ public class DirectByteBufferTest {
          */
         byteBuffer.clear();
         System.out.println(byteBuffer);//[pos=0 lim=10 cap=10]
+
+        byteBuffer.put((byte)1);
+        byteBuffer.put((byte)2);
+        byteBuffer.put((byte)3);
+        System.out.println(byteBuffer);//[pos=3 lim=10 cap=10]
+        byteBuffer.flip();
+        System.out.println(byteBuffer.get());
+        System.out.println(byteBuffer);//[pos=1 lim=3 cap=10]
+        byteBuffer.compact();
+        System.out.println(byteBuffer);//[pos=2 lim=10 cap=10]
+        System.out.println(byteBuffer.get());
+        System.out.println(byteBuffer.get());
     }
 }
