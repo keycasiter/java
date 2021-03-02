@@ -1,5 +1,7 @@
 package com.github.java.learning;
 
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.locks.ReentrantLock;
 import java.util.stream.IntStream;
 
 /**
@@ -17,8 +19,16 @@ public class ApiTest {
 
 
     public static void main(String[] args) {
-        String binary = "111111111111111111111111111111111000011100100010000110010001110";
-
-        System.out.println(Long.toBinaryString(Long.MAX_VALUE));
+        Thread t1 = new Thread(()->{
+            try {
+                Thread.sleep(10000000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        });
+        //设置守护线程，则守护主线程，main方法结束则退出；
+        //如果不设置，则为用户线程，阻塞在sleep上
+        t1.setDaemon(true);
+        t1.start();
     }
 }
