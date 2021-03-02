@@ -9,31 +9,25 @@ public class BinarySearch {
         if (null == nums || 0 == nums.length) return -1;
 
         int left = 0;
-        int right = nums.length;
-        int count = 0;
+        int right = nums.length -1;
 
         while (left <= right) {
-            int mid = (left + right) >>> 1;
+            int mid = left + (right - left) / 2;
 
             if (target == nums[mid]) {
-                System.out.println("count:" + count);
                 return mid;
+            }else if (target < nums[mid]) {
+                right = mid - 1;
+            }else if (target > nums[mid]) {
+                left = mid + 1;
             }
-
-            if (target < nums[mid]) {
-                right = mid;
-            }
-            if (target > nums[mid]) {
-                left = mid;
-            }
-            count++;
         }
         return -1;
     }
 
     public static void main(String[] args) {
-        int[] nums = new int[]{-1, 0, 3, 5, 9, 12,22,33,44,66};
-        int target = 66;
+        int[] nums = new int[]{-1, 0, 3, 5, 9, 12};
+        int target = 2;
 
         System.out.println(search(nums, target));
     }
