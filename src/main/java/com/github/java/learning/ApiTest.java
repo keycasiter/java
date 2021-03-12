@@ -1,7 +1,5 @@
 package com.github.java.learning;
 
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.locks.ReentrantLock;
 import java.util.stream.IntStream;
 
 /**
@@ -13,7 +11,7 @@ public class ApiTest {
     public static void test01() {
         IntStream.rangeClosed(0, 30).forEach(x -> {
             int num = new Double(Math.pow(2, x)).intValue() - 1;
-            System.out.format("\t 2的%s次方 num:%s \t binary:%s \n",x, num, Long.toBinaryString(num));
+            System.out.format("\t 2的%s次方 num:%s \t binary:%s \n", x, num, Long.toBinaryString(num));
         });
     }
 
@@ -30,9 +28,12 @@ public class ApiTest {
 //        //如果不设置，则为用户线程，阻塞在sleep上
 //        t1.setDaemon(true);
 //        t1.start();
-        int a = 10;
-        System.out.println(a^a);
-        System.out.println(a^0);
-        System.out.println(a^a^a);
+        int a = 3;
+        int b = 5;
+        int c = a ^ b;
+
+        System.out.format("a = %s , b = %s , c(a^b) = %s \n", a, b, c);
+        System.out.format("a(c^b) = %s , b(a^c) = %s \n", c ^ b, c ^ a);
+
     }
 }

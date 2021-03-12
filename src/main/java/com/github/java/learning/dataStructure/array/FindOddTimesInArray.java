@@ -42,6 +42,7 @@ public class FindOddTimesInArray {
     }
 
     public static void main(String[] args) {
+        //两个奇数次的数
         int[] arr = new int[]{3, 5, 6, 6, 7, 5, 2, 2};
         System.out.println(findOddTimesBySet(arr));
         System.out.println(findOddTimesByXOR(arr));
