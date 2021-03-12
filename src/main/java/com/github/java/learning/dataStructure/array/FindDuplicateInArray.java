@@ -32,9 +32,9 @@ public class FindDuplicateInArray {
     /**
      * 异或
      * <p>
-     *     a^0 =a
-     *     a^a =0
-     *
+     * a^0 =a
+     * a^a =0
+     * <p>
      * 无需额外空间
      * 时间复杂度 O(N)
      */
@@ -43,7 +43,7 @@ public class FindDuplicateInArray {
 
         int result = 0;
         for (int i = 0; i < arr.length; i++) {
-            result ^= arr[i];
+            result ^= arr[i] ^ i;
         }
 
         if (0 != result) return result;
@@ -52,7 +52,7 @@ public class FindDuplicateInArray {
     }
 
     public static void main(String[] args) {
-        int[] arr = new int[]{3, 2, 5, 6, 1, 2, 10, 7, 9};
+        int[] arr = new int[]{1, 2, 3, 4, 4, 5, 6, 7, 8};
         System.out.println(findDuplicateXOR(arr));
     }
 }
