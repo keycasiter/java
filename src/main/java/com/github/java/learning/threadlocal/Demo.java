@@ -14,7 +14,7 @@ public class Demo {
         //return 0
 
 
-        System.out.println(find(nums1, -2));//4
+//        System.out.println(find(nums1, -2));//4
     }
 
     public static int find(int[] arr, int target) {

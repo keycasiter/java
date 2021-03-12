@@ -1,4 +1,4 @@
-package com.github.java.learning.dataStructure;
+package com.github.java.learning.dataStructure.tree;
 
 import com.google.common.collect.Lists;
 import org.springframework.util.Assert;

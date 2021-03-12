@@ -1,4 +1,4 @@
-package com.github.java.learning.dataStructure;
+package com.github.java.learning.dataStructure.tree;
 
 import java.util.LinkedList;
 import java.util.Queue;
