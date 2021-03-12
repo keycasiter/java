@@ -13,7 +13,7 @@ public class SingleThreadBIOSocketClient {
 
     public static void main(String[] args) throws IOException {
         Socket socketClient = new Socket();
-        socketClient.connect(new InetSocketAddress("127.0.0.1", 9999));
+        socketClient.connect(new InetSocketAddress("10.222.115.208", 9999));
 
         System.out.println("Client connected ...");
 
