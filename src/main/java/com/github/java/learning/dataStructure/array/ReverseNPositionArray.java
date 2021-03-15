@@ -4,49 +4,42 @@ import java.util.Arrays;
 
 public class ReverseNPositionArray {
 
-    public static void reverse(int[] arr, int k) {
-        if (null == arr || 0 == arr.length || 0 == k) return;
+    /**
+     * 翻转
+     */
+    public static void reverse(int[] arr, int start, int end) {
+        if (null == arr || 0 == arr.length || start < 0 || end < 0) return;
+        System.out.format("start = %s , end = %s", start, end);
+        while (start < end) {
+            int temp = arr[end];
+            arr[end] = arr[start];
+            arr[start] = temp;
 
-        //最大索引
-        int maxIdx = arr.length - 1;
-
-        //临时存储对象
-        Integer tempObj = null;
-        //临时存储对象索引
-        int tempIdx = 0;
-
-        for (int i = 0; i < arr.length; i++) {
-            //获取k索引
-            int kIdx = getK(tempIdx, k, maxIdx);
-
-            //临时存储对象
-            if (tempObj == null) {
-                tempObj = arr[kIdx];
-                arr[kIdx] = arr[0];
-            } else {
-                int temp = arr[kIdx];
-                //更新kIdx对象
-                arr[kIdx] = tempObj;
-                tempObj = temp;
-            }
-            tempIdx = kIdx;
+            start++;
+            end--;
         }
     }
 
-    /**
-     * 计算K位索引
-     */
-    public static int getK(int curIdx, int k, int maxIdx) {
-        //计算偏移量K的索引位
-        return curIdx + k > maxIdx ? curIdx + k - maxIdx - 1 : curIdx + k;
-    }
-
     public static void main(String[] args) {
-        int[] nums = new int[]{1, 2, 3, 4, 5, 6, 7};
-        int k = 3;
+        
+        //-1, -100, 3, 99
+        //1, 2, 3, 4, 5, 6, 7
+        //-1
+        int[] nums = new int[]{-1};
+        int k = 2;
 
-        reverse(nums, k);
+        int maxIdx = nums.length - 1;
 
+        System.out.println(Arrays.toString(nums));
+        // -1, -100, 3, 99  [2,3]
+        reverse(nums, maxIdx - k + 1, maxIdx);
+        System.out.println(Arrays.toString(nums));
+        // -1, -100, 99, 3  [0,1]
+        reverse(nums, 0, maxIdx - k);
+        System.out.println(Arrays.toString(nums));
+        // -100, -1, 99, 3  [0,3]
+        reverse(nums, 0, maxIdx);
+        // 3, 99, -1, -100
         System.out.println(Arrays.toString(nums));
     }
 }
