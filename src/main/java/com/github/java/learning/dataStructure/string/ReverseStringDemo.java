@@ -35,5 +35,6 @@ public class ReverseStringDemo {
     public static void main(String[] args) {
 //        reverse(new char[]{'a','b','c','d','e'});
         reverseByBit(new char[]{'a','b','c','d','e'});
+        reverseByBit(new char[]{'a','b','c','d','e'});
     }
 }
