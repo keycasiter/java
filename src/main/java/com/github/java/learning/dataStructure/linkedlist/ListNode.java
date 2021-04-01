@@ -9,6 +9,8 @@ public class ListNode<T> {
 
     public ListNode next;
 
+    public ListNode pre;
+
     public ListNode() {
     }
 
