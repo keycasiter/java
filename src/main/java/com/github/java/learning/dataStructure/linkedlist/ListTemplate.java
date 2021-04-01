@@ -38,6 +38,49 @@ public class ListTemplate<T> {
         size++;
     }
 
+    public ListNode find(ListNode node) {
+        ListNode curNode = header.next;
+        while (curNode != tailer) {
+            if (node == curNode) return curNode;
+            curNode = curNode.next;
+        }
+        return null;
+    }
+
+    public boolean addBefore(ListNode beforeNode, ListNode addNode) {
+        ListNode findNode = find(beforeNode);
+        if (null != findNode) {
+            //prev
+            findNode.pre.next = addNode;
+            //cur
+            addNode.pre = findNode.pre;
+            addNode.next = findNode;
+            //next
+            findNode.pre = addNode;
+
+            size++;
+            return true;
+        }
+        return false;
+    }
+
+    public boolean addAfter(ListNode beforeNode, ListNode addNode) {
+        ListNode findNode = find(beforeNode);
+        if (null != findNode) {
+            //prev
+            findNode.pre.next = addNode;
+            //cur
+            addNode.pre = findNode.pre;
+            addNode.next = findNode;
+            //next
+            findNode.pre = addNode;
+
+            size++;
+            return true;
+        }
+        return false;
+    }
+
     public boolean contains(ListNode node) {
         ListNode curNode = header.next;
         while (curNode != tailer) {
