@@ -16,9 +16,17 @@ public class SumDemo {
         return sum2(arr, size - 1) + arr[size - 1];
     }
 
+    public static int sum3(int[] arr, int low, int high) {
+        if (low == high) return arr[low];
+
+        int mid = (low + high) / 2;
+        return sum3(arr, low, mid) + sum3(arr, mid + 1, high);
+    }
+
     public static void main(String[] args) {
         int[] arr = new int[]{1, 2, 3, 4};
         System.out.println(sum1(arr));
         System.out.println(sum2(arr, arr.length));
+        System.out.println(sum3(arr, 0, arr.length - 1));
     }
 }
