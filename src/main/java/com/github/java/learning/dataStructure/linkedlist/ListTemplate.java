@@ -67,13 +67,13 @@ public class ListTemplate<T> {
     public boolean addAfter(ListNode beforeNode, ListNode addNode) {
         ListNode findNode = find(beforeNode);
         if (null != findNode) {
-            //prev
-            findNode.pre.next = addNode;
             //cur
-            addNode.pre = findNode.pre;
-            addNode.next = findNode;
+            addNode.pre = findNode;
+            addNode.next = findNode.next;
             //next
-            findNode.pre = addNode;
+            findNode.next.pre = addNode;
+            //prev
+            findNode.next = addNode;
 
             size++;
             return true;
@@ -137,6 +137,7 @@ public class ListTemplate<T> {
         list.addLast(node4);
         list.addLast(node5);
         list.addFirst(node0);
+        list.addAfter(node1, node0);
         list.print();
         System.out.println("size: " + list.size());
         System.out.println(list.contains(node1));
