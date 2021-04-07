@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:task="http://www.springframework.org/schema/task"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task.xsd http://www.springframework.org/schema/aop https://www.springframework.org/schema/aop/spring-aop.xsd">
+
+    <!-- 开启@AspectJ AOP代理 -->
+    <aop:aspectj-autoproxy proxy-target-class="true" expose-proxy="true"/>
+    <!--开启注解调度支持 等同于@Async注解 这里executor是指定线程池，有下面两种异步线程池的配置方式 -->
+    <task:annotation-driven proxy-target-class="true"/>
+
+    <bean id="applicationEventMulticaster" class="org.springframework.context.event.SimpleApplicationEventMulticaster">
+        <property name="taskExecutor" ref="executor" />
+    </bean>
+    <!-- 配置方式1：异步线程池 -->
+    <task:executor id="executor" pool-size="10" keep-alive="3000" queue-capacity="200" rejection-policy="CALLER_RUNS"/>
+    <!--&lt;!&ndash; 配置方式2：异步线程池 &ndash;&gt;-->
+    <!--<bean id="taskExecutor" class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">-->
+        <!--<property name="corePoolSize" value="5"/>-->
+        <!--<property name="keepAliveSeconds" value="3000"/>-->
+        <!--<property name="maxPoolSize" value="50"/>-->
+        <!--<property name="queueCapacity" value="200"/>-->
+    <!--</bean>-->
+</beans>
